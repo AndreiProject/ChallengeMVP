@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "101436990120",
+    "firebase_url": "https://challenge-b088f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "challenge-b088f",
+    "storage_bucket": "challenge-b088f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101436990120:android:6bb67772974c85f93f189d",
+        "android_client_info": {
+          "package_name": "com.paramonov.challenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101436990120-6tqpf1sf41sf5mu35qutv8krc82ompon.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaJbsW0Cdg08-Z2PU1FWH1HBTLG8xLnfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101436990120-6tqpf1sf41sf5mu35qutv8krc82ompon.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

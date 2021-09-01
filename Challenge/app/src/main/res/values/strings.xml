@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Challenge</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="sign_in">sign in</string>
+
+    <string name="nav_category_list">Categories</string>
+    <string name="nav_collection">Collection</string>
+    <string name="nav_statistics">Statistics</string>
+    <string name="nav_planner">Planner</string>
+    <string name="nav_other">Other</string>
+    <string name="nav_arithmetic">Arithmetic</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="nav_open_drawer">Open navigation drawer</string>
+    <string name="nav_close_drawer">Close navigation drawer</string>
+    <string name="permission_title_dialog">Permission dialog</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="message_permission_dialog">Для дальнейшей работы приложения, необходимо подтвердить разрешения</string>
+    <string name="login_input_warning">Введите логин</string>
+    <string name="password_input_warning">Введите пароль</string>
+    <string name="name_input_warning">Введите имя</string>
+    <string name="surname_input_warning">Введите фамилию</string>
+    <string name="log_out">log out</string>
+    <string name="settings">settings</string>
+
+    <string name="menu_delete">Delete</string>
+    <string name="menu_add">Добавить</string>
+    <string name="menu_planner">Запланировать</string>
+    <string name="update">update</string>
+    <string name="user_profile">Профиль</string>
+    <string name="user_surname">Фамилия</string>
+    <string name="user_name">Имя</string>
+
+    <string-array name="tab_name_statistics">
+        <item>User</item>
+        <item>All</item>
+    </string-array>
+</resources>

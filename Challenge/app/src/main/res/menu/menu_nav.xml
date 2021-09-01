@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:checked="true"
+            android:id="@+id/nav_category_list"
+            android:icon="@drawable/ic_category_list"
+            android:title="@string/nav_category_list" />
+        <item
+            android:id="@+id/nav_collection"
+            android:icon="@drawable/ic_collection"
+            android:title="@string/nav_collection" />
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_statistics"
+            android:title="@string/nav_statistics" />
+        <item
+            android:id="@+id/nav_planner"
+            android:icon="@drawable/ic_planner"
+            android:title="@string/nav_planner" />
+    </group>
+    <item android:title="@string/nav_other">
+        <menu>
+            <item
+                android:id="@+id/nav_arithmetic"
+                android:icon="@drawable/ic_arithmetic"
+                android:title="@string/nav_arithmetic" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_margin">20dp</dimen>
+    <dimen name="nav_header_margin">20dp</dimen>
+    <dimen name="nav_header_guide_line">200dp</dimen>
+    <dimen name="challenge_item_image_size">60dp</dimen>
+    <dimen name="card_corner_radius">10dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+
+    <dimen name="fragment_category_image_height">200dp</dimen>
+    <dimen name="fragment_category_text_view_margin">20dp</dimen>
+    <dimen name="fragment_category_text_view_text_size">25sp</dimen>
+
+    <dimen name="fragment_view_pager_container_tab_layout_margin">10dp</dimen>
+    <dimen name="fragment_collection_tv_margin">20dp</dimen>
+    <dimen name="fragment_category_image_view_margin">20dp</dimen>
+
+    <dimen name="challenge_user_item_width">170dp</dimen>
+    <dimen name="challenge_user_item_margin">8dp</dimen>
+    <dimen name="challenge_user_item_tv_margin">15dp</dimen>
+
+    <dimen name="collection_item_bottom_margin">10dp</dimen>
+    <dimen name="collection_item_tv_margin">10dp</dimen>
+    <dimen name="collection_item_tv_start_margin">10dp</dimen>
+    <dimen name="collection_item_tv_text_size">20sp</dimen>
+    <dimen name="collection_list_item_margin">5dp</dimen>
+
+    <dimen name="category_item_tv_text_size">18sp</dimen>
+    <dimen name="category_item_margin">8dp</dimen>
+    <dimen name="category_item_tv_margin">10dp</dimen>
+
+    <dimen name="challenge_user_item_tv_text_size">16sp</dimen>
+    <dimen name="challenge_item_text_size">15sp</dimen>
+    <dimen name="challenge_item_right_margin">10dp</dimen>
+    <dimen name="challenge_item_margin">15dp</dimen>
+
+    <dimen name="settings_margin">50dp</dimen>
+    <dimen name="settings_margin_btn">40dp</dimen>
+    <dimen name="settings_title_margin">25dp</dimen>
+    <dimen name="settings_title_text_size">25sp</dimen>
+</resources>
