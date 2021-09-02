@@ -15,6 +15,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.core.SingleOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.lang.RuntimeException
+import java.util.concurrent.TimeUnit
 
 class AppFirebaseRepository(
     private val auth: FirebaseAuth,
@@ -90,11 +91,9 @@ class AppFirebaseRepository(
         challengeRef.removeValue()
     }
 
-    override fun getChallenges(categoryId: String): LiveData<List<Challenge>> {
-        return MutableLiveData<List<Challenge>>().apply {
-            val groupChallengesRef = fbDatabase.reference.child(
-                GROUP_CHALLENGES
-            )
+    override fun getChallenges(categoryId: String, debounceMs : Long): Flowable<List<Challenge>> =
+        Flowable.create(FlowableOnSubscribe<List<Challenge>> {
+            val groupChallengesRef = fbDatabase.reference.child(GROUP_CHALLENGES)
             val challengesRef = groupChallengesRef.child(categoryId)
 
             val listener = object : ValueEventListener {
@@ -106,16 +105,19 @@ class AppFirebaseRepository(
                             listChallenge.add(it)
                         }
                     }
-                    value = listChallenge
+                    it.onNext(listChallenge)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.d(TAG, error.toString())
+                    it.onComplete()
                 }
             }
             challengesRef.addValueEventListener(listener)
-        }
-    }
+        }, BackpressureStrategy.LATEST)
+            .debounce(debounceMs, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     override fun getAllCategories(): Flowable<List<Category>> =
         Flowable.create(FlowableOnSubscribe<List<Category>> {

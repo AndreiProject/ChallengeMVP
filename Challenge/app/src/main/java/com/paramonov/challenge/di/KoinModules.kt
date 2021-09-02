@@ -13,7 +13,6 @@ import com.paramonov.challenge.data.source.room.AppRoomDatabase
 import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.domain.profile.*
-import com.paramonov.challenge.ui.feature.category.CategoryViewModel
 import com.paramonov.challenge.ui.feature.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel

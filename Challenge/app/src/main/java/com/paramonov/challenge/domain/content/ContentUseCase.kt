@@ -26,8 +26,8 @@ class ContentUseCase(
         rmRepository.removeChallenges(categoryId, challengeId)
     }
 
-    override fun getChallenges(categoryId: String): LiveData<List<Challenge>> {
-        return rmRepository.getChallenges(categoryId)
+    override fun getChallenges(categoryId: String, debounceMs: Long): Flowable<List<Challenge>> {
+        return rmRepository.getChallenges(categoryId, debounceMs)
     }
 
     override fun getAllCategories(): Flowable<List<Category>> {

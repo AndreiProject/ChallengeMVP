@@ -1,8 +1,10 @@
 package com.paramonov.challenge.data.repository.remote
 
+import com.paramonov.challenge.data.repository.model.Challenge
 import com.paramonov.challenge.data.repository.remote.firebase.FirebaseRepository
 import com.paramonov.challenge.data.repository.remote.firebase.model.User
 import com.paramonov.challenge.data.repository.remote.retrofit.RetrofitRepository
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
 class AppRemoteRepository(
@@ -32,7 +34,9 @@ class AppRemoteRepository(
         fbRepository.removeChallenges(categoryId, challengeId)
     }
 
-    override fun getChallenges(categoryId: String) = fbRepository.getChallenges(categoryId)
+    override fun getChallenges(categoryId: String, debounceMs: Long): Flowable<List<Challenge>> {
+        return fbRepository.getChallenges(categoryId, debounceMs)
+    }
 
     override fun getAllCategories() = fbRepository.getAllCategories()
 
