@@ -17,7 +17,5 @@ interface MainPresenterContract {
     @AddToEndSingle
     interface View : MvpView {
         fun init()
-        fun navigateToLogin()
-        fun navigateToSettings()
     }
 }

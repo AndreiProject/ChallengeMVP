@@ -2,20 +2,17 @@ package com.paramonov.challenge.ui.feature.collection
 
 import android.os.Bundle
 import android.view.*
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentCollectionBinding
 import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.domain.content.*
-import com.paramonov.challenge.ui.feature.main.NavigationView
 import moxy.MvpAppCompatFragment
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.View
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.Presenter
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-class CollectionFragment : MvpAppCompatFragment(), NavigationView.Item, View {
+class CollectionFragment : MvpAppCompatFragment(), View {
     companion object {
         fun newInstance() = CollectionFragment()
     }
@@ -50,28 +47,6 @@ class CollectionFragment : MvpAppCompatFragment(), NavigationView.Item, View {
             categories = list
             notifyDataSetChanged()
         }
-    }
-
-    override fun navigateToStatistics() {
-        getNavController()?.navigate(R.id.action_collectionFragment_to_generalStatisticsFragment)
-    }
-
-    override fun navigateToCategoryList() {
-        getNavController()?.navigate(R.id.action_collectionFragment_to_categoryListFragment)
-    }
-
-    override fun navigateToPlanner() {
-        getNavController()?.navigate(R.id.action_collectionFragment_to_plannerFragment)
-    }
-
-    override fun navigateToSettings() {
-        getNavController()?.navigate(R.id.action_collectionFragment_to_settingsFragment)
-    }
-
-    override fun navigateToCollection() {}
-
-    private fun getNavController(): NavController? {
-        return (activity as? NavigationView.ControllerProvider)?.getNavController()
     }
 
     override fun onDestroyView() {

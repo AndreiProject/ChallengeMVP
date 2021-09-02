@@ -9,14 +9,13 @@ import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.databinding.FragmentCategoryListBinding
 import com.paramonov.challenge.domain.content.*
-import com.paramonov.challenge.ui.feature.main.NavigationView
 import com.paramonov.challenge.ui.feature.category_list.CategoryListPresenterContract.*
 import com.paramonov.challenge.ui.feature.category_list.CategoryListAdapter.ItemListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, ItemListener {
+class CategoryListFragment : MvpAppCompatFragment(), View, ItemListener {
     companion object {
         fun newInstance() = CategoryListFragment()
     }
@@ -53,28 +52,6 @@ class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, 
 
     override fun onClick(category: Category) {
         presenter.navigateToCategoryListFragment(category)
-    }
-
-    override fun navigateToStatistics() {
-        getNavController()?.navigate(R.id.action_categoryListFragment_to_generalStatisticsFragment)
-    }
-
-    override fun navigateToCollection() {
-        getNavController()?.navigate(R.id.action_categoryListFragment_to_collectionFragment)
-    }
-
-    override fun navigateToPlanner() {
-        getNavController()?.navigate(R.id.action_categoryListFragment_to_plannerFragment)
-    }
-
-    override fun navigateToSettings() {
-        getNavController()?.navigate(R.id.action_categoryListFragment_to_settingsFragment)
-    }
-
-    override fun navigateToCategoryList() {}
-
-    private fun getNavController(): NavController? {
-        return (activity as? NavigationView.ControllerProvider)?.getNavController()
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,5 @@
 package com.paramonov.challenge.ui.feature.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,14 +12,12 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityMainBinding
 import com.paramonov.challenge.domain.authorization.*
-import com.paramonov.challenge.ui.feature.login.LoginActivity
 import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener,
-    NavigationView.ControllerProvider  {
+class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener {
 
     private var navController: NavController? = null
     private var binding: ActivityMainBinding? = null
@@ -72,19 +69,6 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         toggle.syncState()
     }
 
-    override fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun navigateToSettings() {
-        val navigationItem = getNavigationItemFragment()
-        navigationItem?.navigateToSettings()
-    }
-
-    override fun getNavController() = navController
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_statistics -> {
@@ -110,14 +94,6 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         val drawer = mBinding.drawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun getNavigationItemFragment(): NavigationView.Item? {
-        supportFragmentManager.fragments.forEach {
-            val fragment = it.childFragmentManager.fragments.first()
-            return fragment as? NavigationView.Item
-        }
-        return null
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

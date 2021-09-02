@@ -3,18 +3,15 @@ package com.paramonov.challenge.ui.feature.settings
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.navigation.NavController
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentSettingsBinding
-import com.paramonov.challenge.ui.feature.main.NavigationView
 import com.paramonov.challenge.domain.profile.*
 import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
-    NavigationView.Item {
+class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View {
     private var binding: FragmentSettingsBinding? = null
     private val mBinding get() = binding!!
 
@@ -68,28 +65,6 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
 
     override fun setSurname(surname: String) {
         mBinding.surname.setText(surname)
-    }
-
-    override fun navigateToStatistics() {
-        getNavController()?.navigate(R.id.action_settingsFragment_to_generalStatisticsFragment)
-    }
-
-    override fun navigateToCollection() {
-        getNavController()?.navigate(R.id.action_settingsFragment_to_collectionFragment)
-    }
-
-    override fun navigateToCategoryList() {
-        getNavController()?.navigate(R.id.action_settingsFragment_to_categoryListFragment)
-    }
-
-    override fun navigateToPlanner() {
-        getNavController()?.navigate(R.id.action_settingsFragment_to_plannerFragment)
-    }
-
-    override fun navigateToSettings() {}
-
-    private fun getNavController(): NavController? {
-        return (activity as? NavigationView.ControllerProvider)?.getNavController()
     }
 
     override fun onDestroyView() {

@@ -3,13 +3,11 @@ package com.paramonov.challenge.ui.feature.view_pager_container_statistics_fragm
 import android.view.*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentViewPagerContainerBinding
-import com.paramonov.challenge.ui.feature.main.NavigationView
 
-class ViewPagerContainerStatisticsFragment : Fragment(), NavigationView.Item {
+class ViewPagerContainerStatisticsFragment : Fragment() {
     private var binding: FragmentViewPagerContainerBinding? = null
     private val mBinding get() = binding!!
 
@@ -38,28 +36,6 @@ class ViewPagerContainerStatisticsFragment : Fragment(), NavigationView.Item {
                 tab.setIcon(tabImage[position])
             }.attach()
         }.root
-
-    override fun navigateToCollection() {
-        getNavController()?.navigate(R.id.action_generalStatisticsFragment_to_collectionFragment)
-    }
-
-    override fun navigateToCategoryList() {
-        getNavController()?.navigate(R.id.action_generalStatisticsFragment_to_categoryListFragment)
-    }
-
-    override fun navigateToPlanner() {
-        getNavController()?.navigate(R.id.action_generalStatisticsFragment_to_plannerFragment)
-    }
-
-    override fun navigateToSettings() {
-        getNavController()?.navigate(R.id.action_generalStatisticsFragment_to_settingsFragment)
-    }
-
-    override fun navigateToStatistics() {}
-
-    private fun getNavController(): NavController? {
-        return (activity as? NavigationView.ControllerProvider)?.getNavController()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
