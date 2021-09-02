@@ -8,7 +8,7 @@ import com.paramonov.challenge.ui.feature.category.CategoryPresenterContract.*
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeItemPresenter
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class CategoryPresenter(
     private val category: Category,
@@ -19,7 +19,7 @@ class CategoryPresenter(
         private val TAG = CategoryPresenter::class.java.simpleName
     }
 
-    private val router: Router by KoinJavaComponent.inject(Router::class.java)
+    private val router: Router by inject(Router::class.java)
 
     val itemPresenter = ChallengeItemPresenter()
     private var disposable: Disposable? = null

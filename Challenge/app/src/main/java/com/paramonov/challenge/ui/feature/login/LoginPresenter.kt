@@ -3,19 +3,18 @@ package com.paramonov.challenge.ui.feature.login
 import com.github.terrakok.cicerone.Router
 import com.paramonov.challenge.domain.authorization.AuthorizationUseCaseContract
 import com.paramonov.challenge.ui.feature.login.LoginPresenterContract.*
-import com.paramonov.challenge.ui.navigation.AndroidScreens
-import com.paramonov.challenge.ui.navigation.IScreens
+import com.paramonov.challenge.ui.navigation.*
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class LoginPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPresenter<View>(),
     Presenter {
     private var dataAuth: Result? = null
     private var disposable: Disposable? = null
 
-    private val router: Router by KoinJavaComponent.inject(Router::class.java)
-    private val screens: IScreens by KoinJavaComponent.inject(AndroidScreens::class.java)
+    private val router: Router by inject(Router::class.java)
+    private val screens: IScreens by inject(AndroidScreens::class.java)
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

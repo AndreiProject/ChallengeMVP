@@ -6,13 +6,13 @@ import com.paramonov.challenge.domain.authorization.AuthorizationUseCaseContract
 import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
 import com.paramonov.challenge.ui.navigation.AndroidScreens
 import com.paramonov.challenge.ui.navigation.IScreens
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class MainPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPresenter<View>(),
     Presenter {
 
-    private val router: Router by KoinJavaComponent.inject(Router::class.java)
-    private val screens: IScreens by KoinJavaComponent.inject(AndroidScreens::class.java)
+    private val router: Router by inject(Router::class.java)
+    private val screens: IScreens by inject(AndroidScreens::class.java)
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

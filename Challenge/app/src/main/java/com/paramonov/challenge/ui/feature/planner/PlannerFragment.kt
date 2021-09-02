@@ -3,8 +3,6 @@ package com.paramonov.challenge.ui.feature.planner
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
-import androidx.navigation.NavController
-import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentPlannerBinding
 
 class PlannerFragment : Fragment() {

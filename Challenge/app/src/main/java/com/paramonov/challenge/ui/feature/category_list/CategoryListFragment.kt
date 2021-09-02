@@ -3,9 +3,7 @@ package com.paramonov.challenge.ui.feature.category_list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.databinding.FragmentCategoryListBinding
 import com.paramonov.challenge.domain.content.*

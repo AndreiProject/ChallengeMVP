@@ -15,7 +15,6 @@ import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityLoginBinding
 import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.ui.feature.login.PermissionDialogFragment.DialogListener
-import com.paramonov.challenge.ui.feature.main.MainActivity
 import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
