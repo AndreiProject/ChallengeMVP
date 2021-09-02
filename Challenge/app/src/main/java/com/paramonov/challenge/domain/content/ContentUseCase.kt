@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.paramonov.challenge.data.repository.local.LocalRepository
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.data.repository.remote.RemoteRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -39,6 +40,7 @@ class ContentUseCase(
             val userId = rmRepository.getEmail()
             lcRepository.getCategoriesWithChallenges(userId)
         }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun insertCategoryWithChallenges(category: Category) {
