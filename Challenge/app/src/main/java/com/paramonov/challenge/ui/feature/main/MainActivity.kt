@@ -1,26 +1,33 @@
 package com.paramonov.challenge.ui.feature.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.navigation.*
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityMainBinding
+import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.ui.feature.login.LoginActivity
-import java.lang.RuntimeException
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
+import org.koin.java.KoinJavaComponent.inject
 
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
-    NavigationView.ControllerProvider {
+class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener,
+    NavigationView.ControllerProvider  {
 
     private var navController: NavController? = null
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
-    private val model: MainViewModel by viewModel()
+
+    private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
+    private val presenter: Presenter by moxyPresenter {
+        MainPresenter(useCase)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +36,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         mBinding.toolbar.setTitle(R.string.nav_category_list)
         setContentView(mBinding.root)
         setSupportActionBar(mBinding.toolbar)
+    }
+
+    override fun init() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         mBinding.navView.setNavigationItemSelectedListener(this)
         initBarDrawerToggle()
@@ -45,6 +55,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         )
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+    }
+
+    override fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun navigateToSettings() {
+        val navigationItem = getNavigationItemFragment()
+        navigationItem?.navigateToSettings()
     }
 
     override fun getNavController() = navController
@@ -95,24 +116,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_log_out -> {
-                model.logOut()
-                navigateToLoginActivity()
+                presenter.logOut()
                 true
             }
             R.id.action_settings -> {
                 mBinding.toolbar.setTitle(R.string.nav_settings)
-                val navigationItem = getNavigationItemFragment()
-                navigationItem?.navigateToSettings()
+                presenter.navigateToSettings()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun navigateToLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     override fun onBackPressed() {
