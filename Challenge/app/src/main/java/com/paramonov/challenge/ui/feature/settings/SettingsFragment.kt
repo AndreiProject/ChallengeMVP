@@ -1,27 +1,24 @@
 package com.paramonov.challenge.ui.feature.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.*
-import androidx.lifecycle.*
 import androidx.navigation.NavController
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentSettingsBinding
 import com.paramonov.challenge.ui.feature.main.NavigationView
-import com.paramonov.challenge.data.repository.remote.firebase.model.User
-import com.paramonov.challenge.ui.utils.isValidate
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.paramonov.challenge.domain.profile.*
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
+import org.koin.java.KoinJavaComponent
 
-class SettingsFragment : Fragment(), NavigationView.Item {
+class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
+    NavigationView.Item {
     private var binding: FragmentSettingsBinding? = null
     private val mBinding get() = binding!!
 
-    private val model: SettingsViewModel by viewModel()
-    private val observer = Observer<User> { user ->
-        user.let {
-            mBinding.name.setText(it.name)
-            mBinding.surname.setText(it.surname)
-        }
+    private val useCase: ProfileUseCaseContract by KoinJavaComponent.inject(ProfileUseCase::class.java)
+    private val presenter: SettingsPresenterContract.Presenter by moxyPresenter {
+        SettingsPresenter(useCase)
     }
 
     override fun onCreateView(
@@ -31,27 +28,22 @@ class SettingsFragment : Fragment(), NavigationView.Item {
     ) = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
-            model.user.observe(viewLifecycleOwner, observer)
-
-            mBinding.update.setOnClickListener {
-                updateUser()
-            }
-            mBinding.name.setOnEditorActionListener { _, _, _ ->
-                return@setOnEditorActionListener false
-            }
-            mBinding.surname.setOnEditorActionListener { _, _, _ ->
-                return@setOnEditorActionListener false
-            }
         }.root
 
-    private fun updateUser() {
-        with(mBinding) {
-            if (name.isValidate(requireContext(), R.string.name_input_warning)) {
-                if (surname.isValidate(requireContext(), R.string.surname_input_warning)) {
-                    model.updateUser(User(name.text.toString(), surname.text.toString()))
-                }
-            }
+    override fun init() {
+        mBinding.update.setOnClickListener {
+            val name = mBinding.name.text.toString()
+            val surname = mBinding.surname.text.toString()
+            presenter.updateUser(name, surname)
         }
+    }
+
+    override fun setName(name: String) {
+        mBinding.name.setText(name)
+    }
+
+    override fun setSurname(surname: String) {
+        mBinding.surname.setText(surname)
     }
 
     override fun navigateToStatistics() {
@@ -78,7 +70,6 @@ class SettingsFragment : Fragment(), NavigationView.Item {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        model.user.observeForever(observer)
         binding = null
     }
 }

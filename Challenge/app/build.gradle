@@ -71,6 +71,12 @@ dependencies {
     implementation 'org.koin:koin-android:2.2.0'
     implementation 'org.koin:koin-android-viewmodel:2.2.0'
 
+    // moxy
+    implementation "com.github.moxy-community:moxy:2.2.1"
+    kapt "com.github.moxy-community:moxy-compiler:2.1.2"
+    implementation "com.github.moxy-community:moxy-ktx:2.1.2"
+    implementation "com.github.moxy-community:moxy-androidx:2.1.2"
+
     // firebase
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
