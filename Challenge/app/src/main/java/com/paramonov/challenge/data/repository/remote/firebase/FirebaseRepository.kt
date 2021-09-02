@@ -14,5 +14,5 @@ interface FirebaseRepository {
     fun getUser(): Flowable<User>
     fun removeChallenges(categoryId: String, challengeId: String)
     fun getChallenges(categoryId: String): LiveData<List<Challenge>>
-    fun getAllCategories(): LiveData<List<Category>>
+    fun getAllCategories(): Flowable<List<Category>>
 }

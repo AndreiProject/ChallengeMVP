@@ -1,47 +1,55 @@
 package com.paramonov.challenge.ui.feature.category_list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.*
-import androidx.lifecycle.*
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.paramonov.challenge.R
-import com.paramonov.challenge.databinding.FragmentCategoryListBinding
 import com.paramonov.challenge.data.repository.model.Category
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.paramonov.challenge.databinding.FragmentCategoryListBinding
+import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.main.NavigationView
+import com.paramonov.challenge.ui.feature.category_list.CategoryListPresenterContract.*
 import com.paramonov.challenge.ui.feature.category_list.CategoryListAdapter.ItemListener
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
+import org.koin.java.KoinJavaComponent.inject
 
 const val CATEGORY_ID = "CATEGORY_ID"
 const val CATEGORY_NAME = "CATEGORY_TITLE"
 const val CATEGORY_IMG_URL = "CATEGORY_IMG_URL"
 
-class CategoryListFragment : Fragment(), NavigationView.Item, ItemListener {
+class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, ItemListener {
     private var binding: FragmentCategoryListBinding? = null
     private val mBinding get() = binding!!
-
     private lateinit var rvCategories: RecyclerView
 
-    private val model: CategoryListViewModel by viewModel()
-    private val observer = Observer<List<Category>> { categories ->
-        (rvCategories.adapter as CategoryListAdapter).let { adapter ->
-            adapter.categories = categories
-            adapter.notifyDataSetChanged()
-        }
+    private val useCase: ContentUseCaseContract by inject(ContentUseCase::class.java)
+    private val presenter: Presenter by moxyPresenter {
+        CategoryListPresenter(useCase)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentCategoryListBinding.inflate(layoutInflater, container, false).also {
-        binding = it
+    ) = FragmentCategoryListBinding.inflate(layoutInflater, container, false)
+        .also {
+            binding = it
+        }.root
+
+    override fun init() {
         rvCategories = mBinding.categoryRv
         rvCategories.adapter = CategoryListAdapter(this)
+    }
 
-        model.categories.observe(viewLifecycleOwner, observer)
-    }.root
+    override fun updateList(list: List<Category>) {
+        (rvCategories.adapter as CategoryListAdapter).let { adapter ->
+            adapter.categories = list
+            adapter.notifyDataSetChanged()
+        }
+    }
 
     override fun onClick(category: Category) {
         val bundle = Bundle()
@@ -50,10 +58,7 @@ class CategoryListFragment : Fragment(), NavigationView.Item, ItemListener {
             putString(CATEGORY_NAME, category.name)
             putString(CATEGORY_IMG_URL, category.imgUrl)
         }
-        getNavController()?.navigate(
-            R.id.action_categoryListFragment_to_categoryFragment,
-            bundle
-        )
+        getNavController()?.navigate(R.id.action_categoryListFragment_to_categoryFragment, bundle)
     }
 
     override fun navigateToStatistics() {
@@ -80,7 +85,6 @@ class CategoryListFragment : Fragment(), NavigationView.Item, ItemListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        model.categories.removeObserver(observer)
         rvCategories.adapter = null
         binding = null
     }

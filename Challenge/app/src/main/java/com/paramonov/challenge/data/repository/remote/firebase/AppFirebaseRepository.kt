@@ -117,12 +117,9 @@ class AppFirebaseRepository(
         }
     }
 
-    override fun getAllCategories(): LiveData<List<Category>> {
-        return MutableLiveData<List<Category>>().apply {
-            val categoriesRef = fbDatabase.reference.child(
-                GROUP_CATEGORIES
-            )
-
+    override fun getAllCategories(): Flowable<List<Category>> =
+        Flowable.create(FlowableOnSubscribe<List<Category>> {
+            val categoriesRef = fbDatabase.reference.child(GROUP_CATEGORIES)
             val listener = object : ValueEventListener {
                 override fun onDataChange(data: DataSnapshot) {
                     val listCategory = mutableListOf<Category>()
@@ -132,14 +129,16 @@ class AppFirebaseRepository(
                             listCategory.add(it)
                         }
                     }
-                    value = listCategory
+                    it.onNext(listCategory)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.d(TAG, error.toString())
+                    it.onComplete()
                 }
             }
             categoriesRef.addValueEventListener(listener)
-        }
-    }
+        }, BackpressureStrategy.LATEST)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }
