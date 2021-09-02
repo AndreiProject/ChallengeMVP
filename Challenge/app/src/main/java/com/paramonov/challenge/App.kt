@@ -13,6 +13,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
+                ciceroneModule,
                 remoteRepositoryModule,
                 localRepositoryModule,
                 useCaseModule
