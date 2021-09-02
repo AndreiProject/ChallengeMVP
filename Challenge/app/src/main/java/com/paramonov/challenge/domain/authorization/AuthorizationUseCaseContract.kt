@@ -1,10 +1,9 @@
 package com.paramonov.challenge.domain.authorization
 
-import androidx.lifecycle.LiveData
-import com.paramonov.challenge.ui.feature.login.Result
+import io.reactivex.rxjava3.core.Single
 
 interface AuthorizationUseCaseContract {
     fun checkAuth(): Boolean
-    fun auth(email: String, password: String): LiveData<Result>
+    fun auth(email: String, password: String): Single<Boolean>
     fun logOut()
 }

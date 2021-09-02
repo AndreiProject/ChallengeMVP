@@ -3,7 +3,6 @@ package com.paramonov.challenge.ui.feature.login
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
@@ -12,14 +11,17 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityLoginBinding
+import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.ui.feature.login.PermissionDialogFragment.DialogListener
 import com.paramonov.challenge.ui.feature.main.MainActivity
-import com.paramonov.challenge.ui.utils.isValidate
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.paramonov.challenge.ui.utils.warnError
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
+import org.koin.java.KoinJavaComponent.inject
 
 private const val REQUEST_PERMISSIONS = 112
 
-class LoginActivity : AppCompatActivity(), DialogListener {
+class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterContract.View {
     companion object {
         val TAG: String = LoginActivity::class.java.simpleName
     }
@@ -28,58 +30,44 @@ class LoginActivity : AppCompatActivity(), DialogListener {
     private val mBinding get() = binding!!
     private lateinit var dialog: PermissionDialogFragment
 
-    private val model: LoginViewModel by viewModel()
-    private val modelObserver = Observer<Result> {
-        when (it) {
-            is Result.Authorization -> if (it.isOk) {
-                navigateToMainActivity()
-            }
-            is Result.Error -> {
-                val message= it.error.toString()
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+    private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
+    private val presenter: LoginPresenterContract.Presenter by moxyPresenter {
+        LoginPresenter(useCase)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        dialog = PermissionDialogFragment()
-        checkPermission()
-
-        init()
     }
 
-    private fun init() {
-        model.dataResult.observe(this, modelObserver)
-
-        mBinding.signIn.setOnClickListener {
-            auth()
-        }
-        mBinding.login.setOnEditorActionListener { _, _, _ ->
-            return@setOnEditorActionListener false
-        }
-        mBinding.password.setOnEditorActionListener { _, _, _ ->
-            auth()
-            return@setOnEditorActionListener true
-        }
-    }
-
-    private fun auth() {
+    override fun init() {
         with(mBinding) {
-            if (login.isValidate(this@LoginActivity, R.string.login_input_warning)) {
-                if (password.isValidate(this@LoginActivity, R.string.password_input_warning)) {
-                    model.auth(login.text.toString(), password.text.toString())
-                }
+            signIn.setOnClickListener {
+                presenter.auth(login.text.toString(), password.text.toString())
+            }
+            login.setOnEditorActionListener { _, _, _ ->
+                return@setOnEditorActionListener false
+            }
+            password.setOnEditorActionListener { _, _, _ ->
+                presenter.auth(login.text.toString(), password.text.toString())
+                return@setOnEditorActionListener true
             }
         }
+        dialog = PermissionDialogFragment()
+        checkPermission()
+    }
+
+    override fun loginWarnError() {
+        mBinding.login.warnError(this@LoginActivity, R.string.login_input_warning)
+    }
+
+    override fun passwordWarnError() {
+        mBinding.password.warnError(this@LoginActivity, R.string.password_input_warning)
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun checkPermission(): Boolean {
@@ -106,6 +94,12 @@ class LoginActivity : AppCompatActivity(), DialogListener {
         return permissionState != PackageManager.PERMISSION_GRANTED
     }
 
+    override fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -128,7 +122,6 @@ class LoginActivity : AppCompatActivity(), DialogListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        model.dataResult.removeObserver(modelObserver)
         binding = null
     }
 }

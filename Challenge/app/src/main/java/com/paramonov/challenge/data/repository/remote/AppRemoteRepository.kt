@@ -1,10 +1,11 @@
 package com.paramonov.challenge.data.repository.remote
 
-import androidx.lifecycle.LiveData
+import com.paramonov.challenge.data.repository.model.Challenge
 import com.paramonov.challenge.data.repository.remote.firebase.FirebaseRepository
 import com.paramonov.challenge.data.repository.remote.firebase.model.User
 import com.paramonov.challenge.data.repository.remote.retrofit.RetrofitRepository
-import com.paramonov.challenge.ui.feature.login.Result
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Single
 
 class AppRemoteRepository(
     private val fbRepository: FirebaseRepository,
@@ -13,7 +14,7 @@ class AppRemoteRepository(
 
     override fun checkAuth() = fbRepository.checkAuth()
 
-    override fun auth(email: String, password: String): LiveData<Result> {
+    override fun auth(email: String, password: String): Single<Boolean> {
         return fbRepository.auth(email, password)
     }
 
@@ -33,7 +34,9 @@ class AppRemoteRepository(
         fbRepository.removeChallenges(categoryId, challengeId)
     }
 
-    override fun getChallenges(categoryId: String) = fbRepository.getChallenges(categoryId)
+    override fun getChallenges(categoryId: String, debounceMs: Long): Flowable<List<Challenge>> {
+        return fbRepository.getChallenges(categoryId, debounceMs)
+    }
 
     override fun getAllCategories() = fbRepository.getAllCategories()
 

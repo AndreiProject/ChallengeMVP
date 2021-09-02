@@ -7,7 +7,7 @@ import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.databinding.CollectionListItemBinding
 import com.paramonov.challenge.ui.feature.collection.CollectionAdapter.CollectionHolder
 
-class CollectionAdapter() : RecyclerView.Adapter<CollectionHolder>() {
+class CollectionAdapter : RecyclerView.Adapter<CollectionHolder>() {
     var categories = listOf<Category>()
     override fun getItemCount() = categories.size
 
@@ -22,7 +22,7 @@ class CollectionAdapter() : RecyclerView.Adapter<CollectionHolder>() {
         holder.bind(category)
     }
 
-    inner class CollectionHolder(private val binding: CollectionListItemBinding) :
+    class CollectionHolder(private val binding: CollectionListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: Category) {

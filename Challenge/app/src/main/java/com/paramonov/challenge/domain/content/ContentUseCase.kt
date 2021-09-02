@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import com.paramonov.challenge.data.repository.local.LocalRepository
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.data.repository.remote.RemoteRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.ResponseBody
@@ -25,11 +27,11 @@ class ContentUseCase(
         rmRepository.removeChallenges(categoryId, challengeId)
     }
 
-    override fun getChallenges(categoryId: String): LiveData<List<Challenge>> {
-        return rmRepository.getChallenges(categoryId)
+    override fun getChallenges(categoryId: String, debounceMs: Long): Flowable<List<Challenge>> {
+        return rmRepository.getChallenges(categoryId, debounceMs)
     }
 
-    override fun getAllCategories(): LiveData<List<Category>> {
+    override fun getAllCategories(): Flowable<List<Category>> {
         return rmRepository.getAllCategories()
     }
 
@@ -38,6 +40,7 @@ class ContentUseCase(
             val userId = rmRepository.getEmail()
             lcRepository.getCategoriesWithChallenges(userId)
         }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun insertCategoryWithChallenges(category: Category) {

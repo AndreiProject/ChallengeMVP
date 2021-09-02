@@ -16,12 +16,8 @@ fun ImageView.loadByUrl(imgUrl: String) {
     }
 }
 
-fun EditText.isValidate(context: Context, warnMessageId: Int): Boolean {
-    if (text.isBlank()) {
+fun EditText.warnError(context: Context, warnMessageId: Int) {
         requestFocus()
         val message = context.getString(warnMessageId)
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        return false
-    }
-    return true
 }
