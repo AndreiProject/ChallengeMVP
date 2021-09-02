@@ -5,7 +5,9 @@ import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle
 
 interface CategoryListPresenterContract {
-    interface Presenter
+    interface Presenter {
+        fun navigateToCategoryListFragment(category: Category)
+    }
 
     @AddToEndSingle
     interface View : MvpView {

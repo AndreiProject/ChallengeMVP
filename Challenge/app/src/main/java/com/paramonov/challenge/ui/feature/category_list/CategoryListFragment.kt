@@ -16,10 +16,6 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-const val CATEGORY_ID = "CATEGORY_ID"
-const val CATEGORY_NAME = "CATEGORY_TITLE"
-const val CATEGORY_IMG_URL = "CATEGORY_IMG_URL"
-
 class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, ItemListener {
     companion object {
         fun newInstance() = CategoryListFragment()
@@ -56,13 +52,7 @@ class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, 
     }
 
     override fun onClick(category: Category) {
-        val bundle = Bundle()
-        with(bundle) {
-            putString(CATEGORY_ID, category.id)
-            putString(CATEGORY_NAME, category.name)
-            putString(CATEGORY_IMG_URL, category.imgUrl)
-        }
-        getNavController()?.navigate(R.id.action_categoryListFragment_to_categoryFragment, bundle)
+        presenter.navigateToCategoryListFragment(category)
     }
 
     override fun navigateToStatistics() {
