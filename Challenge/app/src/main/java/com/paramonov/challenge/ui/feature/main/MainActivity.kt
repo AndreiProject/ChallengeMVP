@@ -7,6 +7,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.navigation.*
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityMainBinding
@@ -24,6 +26,9 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
 
+    private val navigatorHolder: NavigatorHolder by inject(NavigatorHolder::class.java)
+    private val navigator = AppNavigator(this, R.id.container)
+
     private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
     private val presenter: Presenter by moxyPresenter {
         MainPresenter(useCase)
@@ -36,6 +41,16 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         mBinding.toolbar.setTitle(R.string.nav_category_list)
         setContentView(mBinding.root)
         setSupportActionBar(mBinding.toolbar)
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
     }
 
     override fun init() {
@@ -71,30 +86,27 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
     override fun getNavController() = navController
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val navigationItem = getNavigationItemFragment()
-
         when (item.itemId) {
             R.id.nav_statistics -> {
                 mBinding.toolbar.setTitle(R.string.nav_statistics)
-                navigationItem?.navigateToStatistics()
+                presenter.navigateToStatistics()
             }
             R.id.nav_collection -> {
                 mBinding.toolbar.setTitle(R.string.nav_collection)
-                navigationItem?.navigateToCollection()
+                presenter.navigateToCollection()
             }
             R.id.nav_category_list -> {
                 mBinding.toolbar.setTitle(R.string.nav_category_list)
-                navigationItem?.navigateToCategoryList()
+                presenter.navigateToCategoryList()
             }
             R.id.nav_planner -> {
                 mBinding.toolbar.setTitle(R.string.nav_planner)
-                navigationItem?.navigateToPlanner()
+                presenter.navigateToPlanner()
             }
             R.id.nav_arithmetic -> {
             }
             else -> throw RuntimeException("Item not found")
         }
-
         val drawer = mBinding.drawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true

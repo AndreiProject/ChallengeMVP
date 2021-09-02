@@ -8,6 +8,10 @@ interface MainPresenterContract {
     interface Presenter {
         fun logOut()
         fun navigateToSettings()
+        fun navigateToStatistics()
+        fun navigateToCollection()
+        fun navigateToCategoryList()
+        fun navigateToPlanner()
     }
 
     @AddToEndSingle
