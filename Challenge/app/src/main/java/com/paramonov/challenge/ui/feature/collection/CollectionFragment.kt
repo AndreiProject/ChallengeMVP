@@ -1,29 +1,29 @@
 package com.paramonov.challenge.ui.feature.collection
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.*
-import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentCollectionBinding
 import com.paramonov.challenge.data.repository.model.Category
+import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.main.NavigationView
-import org.koin.android.viewmodel.ext.android.viewModel
+import moxy.MvpAppCompatFragment
+import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.View
+import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.Presenter
+import moxy.ktx.moxyPresenter
+import org.koin.java.KoinJavaComponent.inject
 
-class CollectionFragment : Fragment(), NavigationView.Item {
+class CollectionFragment : MvpAppCompatFragment(), NavigationView.Item, View {
     private var binding: FragmentCollectionBinding? = null
     private val mBinding get() = binding!!
 
     private lateinit var rvCollection: RecyclerView
 
-    private val model: CollectionViewModel by viewModel()
-    private val observer = Observer<List<Category>> {
-        (rvCollection.adapter as CollectionAdapter).run {
-            categories = it
-            notifyDataSetChanged()
-        }
+    private val useCase: ContentUseCaseContract by inject(ContentUseCase::class.java)
+    private val presenter: Presenter by moxyPresenter {
+        CollectionListPresenter(useCase)
     }
 
     override fun onCreateView(
@@ -33,12 +33,20 @@ class CollectionFragment : Fragment(), NavigationView.Item {
     ) = FragmentCollectionBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
-            rvCollection = mBinding.collectionRv
-            rvCollection.setHasFixedSize(true)
-            rvCollection.adapter = CollectionAdapter()
-
-            model.categories.observe(viewLifecycleOwner, observer)
         }.root
+
+    override fun init() {
+        rvCollection = mBinding.collectionRv
+        rvCollection.setHasFixedSize(true)
+        rvCollection.adapter = CollectionAdapter()
+    }
+
+    override fun updateList(list: List<Category>) {
+        (rvCollection.adapter as CollectionAdapter).run {
+            categories = list
+            notifyDataSetChanged()
+        }
+    }
 
     override fun navigateToStatistics() {
         getNavController()?.navigate(R.id.action_collectionFragment_to_generalStatisticsFragment)
@@ -64,7 +72,6 @@ class CollectionFragment : Fragment(), NavigationView.Item {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        model.categories.removeObserver(observer)
         binding = null
     }
 }
