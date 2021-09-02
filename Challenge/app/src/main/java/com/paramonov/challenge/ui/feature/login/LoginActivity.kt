@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityLoginBinding
 import com.paramonov.challenge.domain.authorization.*
@@ -26,6 +28,9 @@ class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterCont
         val TAG: String = LoginActivity::class.java.simpleName
     }
 
+    private val navigatorHolder: NavigatorHolder by inject(NavigatorHolder::class.java)
+    private val navigator = AppNavigator(this, R.id.container)
+
     private var binding: ActivityLoginBinding? = null
     private val mBinding get() = binding!!
     private lateinit var dialog: PermissionDialogFragment
@@ -39,6 +44,16 @@ class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterCont
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
     }
 
     override fun init() {
@@ -92,12 +107,6 @@ class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterCont
     private fun isPermissionNeedConfirmation(permission: String): Boolean {
         val permissionState = (ContextCompat.checkSelfPermission(this, permission))
         return permissionState != PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     override fun onRequestPermissionsResult(

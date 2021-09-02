@@ -12,7 +12,6 @@ interface LoginPresenterContract {
     @AddToEndSingle
     interface View : MvpView {
         fun init()
-        fun navigateToMainActivity()
         fun loginWarnError()
         fun passwordWarnError()
         fun showToast(message: String)
