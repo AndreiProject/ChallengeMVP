@@ -16,6 +16,10 @@ import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
 class CollectionFragment : MvpAppCompatFragment(), NavigationView.Item, View {
+    companion object {
+        fun newInstance() = CollectionFragment()
+    }
+
     private var binding: FragmentCollectionBinding? = null
     private val mBinding get() = binding!!
 

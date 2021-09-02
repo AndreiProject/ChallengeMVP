@@ -24,6 +24,21 @@ import org.koin.java.KoinJavaComponent.inject
 class CategoryFragment : MvpAppCompatFragment(), NavigationView.Item,
     CategoryPresenterContract.View, ChallengeAdapterItemPresenterContract.ItemListener {
 
+    companion object {
+        private const val CATEGORY_ID = "CATEGORY_ID"
+        private const val CATEGORY_NAME = "CATEGORY_TITLE"
+        private const val CATEGORY_IMG_URL = "CATEGORY_IMG_URL"
+
+        fun newInstance(category: Category) = CategoryFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    putString(CATEGORY_ID, category.id)
+                    putString(CATEGORY_NAME, category.name)
+                    putString(CATEGORY_IMG_URL, category.imgUrl)
+                }
+            }
+    }
+
     private var binding: FragmentCategoriesBinding? = null
     private val mBinding get() = binding!!
 

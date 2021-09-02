@@ -12,6 +12,10 @@ class PlannerFragment : Fragment(), NavigationView.Item {
     private var binding: FragmentPlannerBinding? = null
     private val mBinding get() = binding!!
 
+    companion object {
+        fun newInstance() = PlannerFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

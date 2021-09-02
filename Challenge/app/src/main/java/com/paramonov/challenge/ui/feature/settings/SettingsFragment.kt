@@ -18,6 +18,10 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
     private var binding: FragmentSettingsBinding? = null
     private val mBinding get() = binding!!
 
+    companion object {
+        fun newInstance() = SettingsFragment()
+    }
+
     private val useCase: ProfileUseCaseContract by inject(ProfileUseCase::class.java)
     private val presenter: SettingsPresenterContract.Presenter by moxyPresenter {
         SettingsPresenter(useCase)

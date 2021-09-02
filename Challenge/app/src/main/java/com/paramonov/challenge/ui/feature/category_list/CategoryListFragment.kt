@@ -21,6 +21,10 @@ const val CATEGORY_NAME = "CATEGORY_TITLE"
 const val CATEGORY_IMG_URL = "CATEGORY_IMG_URL"
 
 class CategoryListFragment : MvpAppCompatFragment(), NavigationView.Item, View, ItemListener {
+    companion object {
+        fun newInstance() = CategoryListFragment()
+    }
+
     private var binding: FragmentCategoryListBinding? = null
     private val mBinding get() = binding!!
     private lateinit var rvCategories: RecyclerView

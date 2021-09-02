@@ -13,6 +13,10 @@ class ViewPagerContainerStatisticsFragment : Fragment(), NavigationView.Item {
     private var binding: FragmentViewPagerContainerBinding? = null
     private val mBinding get() = binding!!
 
+    companion object {
+        fun newInstance() = ViewPagerContainerStatisticsFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
