@@ -1,12 +1,14 @@
 package com.paramonov.challenge.ui.feature.category
 
 import android.util.Log
+import com.github.terrakok.cicerone.Router
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.domain.content.ContentUseCaseContract
 import com.paramonov.challenge.ui.feature.category.CategoryPresenterContract.*
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeItemPresenter
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
+import org.koin.java.KoinJavaComponent.inject
 
 class CategoryPresenter(
     private val category: Category,
@@ -16,6 +18,8 @@ class CategoryPresenter(
     companion object {
         private val TAG = CategoryPresenter::class.java.simpleName
     }
+
+    private val router: Router by inject(Router::class.java)
 
     val itemPresenter = ChallengeItemPresenter()
     private var disposable: Disposable? = null
@@ -30,11 +34,15 @@ class CategoryPresenter(
                     itemPresenter.updateChallenges(it)
                     viewState.updateAdapterViewChallenges()
                 } else {
-                    viewState.onBackToCategoryList()
+                    onBackToCategoryList()
                 }
             }, {
                 Log.e(TAG, it.toString())
             })
+    }
+
+    private fun onBackToCategoryList() {
+        router.exit()
     }
 
     override fun removeSelectionChallenges() {

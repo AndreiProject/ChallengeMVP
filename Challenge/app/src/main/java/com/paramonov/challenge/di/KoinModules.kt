@@ -1,5 +1,7 @@
 package com.paramonov.challenge.di
 
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.Router
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.paramonov.challenge.data.repository.local.*
@@ -13,8 +15,17 @@ import com.paramonov.challenge.data.source.room.AppRoomDatabase
 import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.domain.profile.*
+import com.paramonov.challenge.ui.navigation.AndroidScreens
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.*
+
+val ciceroneModule = module {
+    val cicerone: Cicerone<Router> = Cicerone.create()
+    single { cicerone }
+    single { cicerone.getNavigatorHolder() }
+    single { cicerone.router }
+    single { AndroidScreens() }
+}
 
 val remoteRepositoryModule = module {
     single { FirebaseAuth.getInstance() }

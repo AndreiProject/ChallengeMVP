@@ -1,14 +1,20 @@
 package com.paramonov.challenge.ui.feature.login
 
+import com.github.terrakok.cicerone.Router
 import com.paramonov.challenge.domain.authorization.AuthorizationUseCaseContract
 import com.paramonov.challenge.ui.feature.login.LoginPresenterContract.*
+import com.paramonov.challenge.ui.navigation.*
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
+import org.koin.java.KoinJavaComponent.inject
 
 class LoginPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPresenter<View>(),
     Presenter {
     private var dataAuth: Result? = null
     private var disposable: Disposable? = null
+
+    private val router: Router by inject(Router::class.java)
+    private val screens: IScreens by inject(AndroidScreens::class.java)
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -16,7 +22,7 @@ class LoginPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPre
 
         if (useCase.checkAuth()) {
             dataAuth = Result.Authorization(true)
-            viewState.navigateToMainActivity()
+            navigateToMainActivity()
         } else {
             dataAuth = Result.Authorization(false)
         }
@@ -35,13 +41,17 @@ class LoginPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPre
         disposable = useCase.auth(email, password).subscribe(
             {
                 dataAuth = Result.Authorization(true)
-                viewState.navigateToMainActivity()
+                navigateToMainActivity()
             },
             {
                 dataAuth = Result.Error(it)
                 viewState.showToast(it.message ?: "")
             }
         )
+    }
+
+    private fun navigateToMainActivity() {
+        router.replaceScreen(screens.navigateToMainActivity())
     }
 
     override fun onDestroy() {

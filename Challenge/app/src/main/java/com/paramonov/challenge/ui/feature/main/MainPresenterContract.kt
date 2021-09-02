@@ -8,12 +8,14 @@ interface MainPresenterContract {
     interface Presenter {
         fun logOut()
         fun navigateToSettings()
+        fun navigateToStatistics()
+        fun navigateToCollection()
+        fun navigateToCategoryList()
+        fun navigateToPlanner()
     }
 
     @AddToEndSingle
     interface View : MvpView {
         fun init()
-        fun navigateToLogin()
-        fun navigateToSettings()
     }
 }

@@ -6,23 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.view.ActionMode.Callback
 import androidx.appcompat.widget.PopupMenu
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.databinding.FragmentCategoriesBinding
 import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapter
-import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapterItemPresenterContract
-import com.paramonov.challenge.ui.feature.category_list.*
-import com.paramonov.challenge.ui.feature.main.NavigationView
 import com.paramonov.challenge.ui.utils.loadByUrl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
+import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapterItemPresenterContract.ItemListener
 
-class CategoryFragment : MvpAppCompatFragment(), NavigationView.Item,
-    CategoryPresenterContract.View, ChallengeAdapterItemPresenterContract.ItemListener {
+class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View, ItemListener {
+
+    companion object {
+        private const val CATEGORY_ID = "CATEGORY_ID"
+        private const val CATEGORY_NAME = "CATEGORY_TITLE"
+        private const val CATEGORY_IMG_URL = "CATEGORY_IMG_URL"
+
+        fun newInstance(category: Category) = CategoryFragment()
+            .apply {
+                arguments = Bundle().apply {
+                    putString(CATEGORY_ID, category.id)
+                    putString(CATEGORY_NAME, category.name)
+                    putString(CATEGORY_IMG_URL, category.imgUrl)
+                }
+            }
+    }
 
     private var binding: FragmentCategoriesBinding? = null
     private val mBinding get() = binding!!
@@ -67,10 +78,6 @@ class CategoryFragment : MvpAppCompatFragment(), NavigationView.Item,
 
     override fun updateAdapterViewItemChallenges(pos: Int) {
         getChallengeAdapter()?.notifyItemChanged(pos)
-    }
-
-    override fun onBackToCategoryList() {
-        getNavController()?.popBackStack()
     }
 
     override fun onClick(v: View?, item: Challenge, pos: Int) {
@@ -135,30 +142,6 @@ class CategoryFragment : MvpAppCompatFragment(), NavigationView.Item,
 
     private fun getStringArg(ket: String): String {
         return arguments?.getString(ket, "") ?: ""
-    }
-
-    override fun navigateToStatistics() {
-        getNavController()?.navigate(R.id.action_categoryFragment_to_generalStatisticsFragment)
-    }
-
-    override fun navigateToCollection() {
-        getNavController()?.navigate(R.id.action_categoryFragment_to_collectionFragment)
-    }
-
-    override fun navigateToCategoryList() {
-        getNavController()?.navigate(R.id.action_categoryFragment_to_categoryListFragment)
-    }
-
-    override fun navigateToPlanner() {
-        getNavController()?.navigate(R.id.action_categoryFragment_to_plannerFragment)
-    }
-
-    override fun navigateToSettings() {
-        getNavController()?.navigate(R.id.action_categoryFragment_to_settingsFragment)
-    }
-
-    private fun getNavController(): NavController? {
-        return (activity as? NavigationView.ControllerProvider)?.getNavController()
     }
 
     override fun onDestroyView() {

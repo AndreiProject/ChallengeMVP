@@ -17,7 +17,6 @@ interface CategoryPresenterContract {
     @AddToEndSingle
     interface View : MvpView {
         fun init()
-        fun onBackToCategoryList()
         fun showSelectedItemChallenges()
         fun updateAdapterViewChallenges()
         fun updateAdapterViewItemChallenges(pos: Int)

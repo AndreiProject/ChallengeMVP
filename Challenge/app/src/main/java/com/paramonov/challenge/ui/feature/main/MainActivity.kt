@@ -1,28 +1,28 @@
 package com.paramonov.challenge.ui.feature.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.navigation.*
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityMainBinding
 import com.paramonov.challenge.domain.authorization.*
-import com.paramonov.challenge.ui.feature.login.LoginActivity
 import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import org.koin.java.KoinJavaComponent.inject
 
-class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener,
-    NavigationView.ControllerProvider  {
+class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener {
 
-    private var navController: NavController? = null
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
+
+    private val navigatorHolder: NavigatorHolder by inject(NavigatorHolder::class.java)
+    private val navigator = AppNavigator(this, R.id.container)
 
     private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
     private val presenter: Presenter by moxyPresenter {
@@ -38,8 +38,17 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         setSupportActionBar(mBinding.toolbar)
     }
 
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
+    }
+
     override fun init() {
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         mBinding.navView.setNavigationItemSelectedListener(this)
         initBarDrawerToggle()
     }
@@ -57,55 +66,31 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         toggle.syncState()
     }
 
-    override fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun navigateToSettings() {
-        val navigationItem = getNavigationItemFragment()
-        navigationItem?.navigateToSettings()
-    }
-
-    override fun getNavController() = navController
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val navigationItem = getNavigationItemFragment()
-
         when (item.itemId) {
             R.id.nav_statistics -> {
                 mBinding.toolbar.setTitle(R.string.nav_statistics)
-                navigationItem?.navigateToStatistics()
+                presenter.navigateToStatistics()
             }
             R.id.nav_collection -> {
                 mBinding.toolbar.setTitle(R.string.nav_collection)
-                navigationItem?.navigateToCollection()
+                presenter.navigateToCollection()
             }
             R.id.nav_category_list -> {
                 mBinding.toolbar.setTitle(R.string.nav_category_list)
-                navigationItem?.navigateToCategoryList()
+                presenter.navigateToCategoryList()
             }
             R.id.nav_planner -> {
                 mBinding.toolbar.setTitle(R.string.nav_planner)
-                navigationItem?.navigateToPlanner()
+                presenter.navigateToPlanner()
             }
             R.id.nav_arithmetic -> {
             }
             else -> throw RuntimeException("Item not found")
         }
-
         val drawer = mBinding.drawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun getNavigationItemFragment(): NavigationView.Item? {
-        supportFragmentManager.fragments.forEach {
-            val fragment = it.childFragmentManager.fragments.first()
-            return fragment as? NavigationView.Item
-        }
-        return null
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
