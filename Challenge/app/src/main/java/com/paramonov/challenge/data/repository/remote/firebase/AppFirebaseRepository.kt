@@ -7,11 +7,12 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ValueEventListener
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.data.repository.remote.firebase.model.User
-import com.paramonov.challenge.ui.feature.login.Result
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.FlowableOnSubscribe
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.SingleOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.lang.RuntimeException
 
@@ -29,21 +30,18 @@ class AppFirebaseRepository(
 
     override fun checkAuth(): Boolean = auth.currentUser != null
 
-    override fun auth(email: String, password: String): LiveData<Result> =
-        MutableLiveData<Result>().apply {
-            value = Result.Authorization(false)
+    override fun auth(email: String, password: String): Single<Boolean> =
+        Single.create(SingleOnSubscribe<Boolean> { emitter ->
             auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    value = Result.Authorization(true)
-                }
+                .addOnSuccessListener { emitter.onSuccess(true) }
                 .addOnFailureListener {
                     auth.createUserWithEmailAndPassword(email, password)
-                        .addOnSuccessListener {
-                            value = Result.Authorization(true)
-                        }
-                        .addOnFailureListener { value = Result.Error(it) }
+                        .addOnSuccessListener { emitter.onSuccess(true) }
+                        .addOnFailureListener { emitter.onError(it) }
                 }
-        }
+        })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     override fun getEmail() = auth.currentUser!!.email!!
 

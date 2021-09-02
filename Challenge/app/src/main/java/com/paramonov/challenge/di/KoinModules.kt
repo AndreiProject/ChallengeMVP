@@ -16,7 +16,6 @@ import com.paramonov.challenge.domain.profile.*
 import com.paramonov.challenge.ui.feature.category.CategoryViewModel
 import com.paramonov.challenge.ui.feature.category_list.CategoryListViewModel
 import com.paramonov.challenge.ui.feature.collection.CollectionViewModel
-import com.paramonov.challenge.ui.feature.login.LoginViewModel
 import com.paramonov.challenge.ui.feature.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
