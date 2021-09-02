@@ -13,9 +13,7 @@ import com.paramonov.challenge.data.source.room.AppRoomDatabase
 import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.domain.profile.*
-import com.paramonov.challenge.ui.feature.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.*
 
 val remoteRepositoryModule = module {
@@ -38,23 +36,4 @@ val useCaseModule = module {
     factory { AuthorizationUseCase(get()) } bind AuthorizationUseCaseContract::class
     factory { ContentUseCase(get(), get()) } bind ContentUseCaseContract::class
     factory { ProfileUseCase(get()) } bind ProfileUseCaseContract::class
-}
-
-val categoryModule = module {
-    viewModel { parameters -> CategoryViewModel(parameters.get(), get()) }
-}
-val categoryListViewModel = module {
-    viewModel { CategoryListViewModel(get()) }
-}
-val collectionViewModel = module {
-    viewModel { CollectionViewModel(get()) }
-}
-val loginViewModel = module {
-    viewModel { LoginViewModel(get()) }
-}
-val mainViewModel = module {
-    viewModel { MainViewModel(get()) }
-}
-val settingsViewModel = module {
-    viewModel { SettingsViewModel(get()) }
 }

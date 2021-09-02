@@ -15,13 +15,7 @@ class App : Application() {
             modules(
                 remoteRepositoryModule,
                 localRepositoryModule,
-                useCaseModule,
-                categoryModule,
-                categoryListViewModel,
-                collectionViewModel,
-                loginViewModel,
-                mainViewModel,
-                settingsViewModel
+                useCaseModule
             )
         }
     }
