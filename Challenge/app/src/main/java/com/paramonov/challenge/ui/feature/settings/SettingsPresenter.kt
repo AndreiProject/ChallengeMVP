@@ -28,6 +28,14 @@ class SettingsPresenter(private val useCase: ProfileUseCaseContract) : MvpPresen
     }
 
     override fun updateUser(name: String, surname: String) {
+        if(name.isBlank()) {
+            viewState.nameWarnError()
+            return
+        }
+        if(surname.isBlank()) {
+            viewState.surnameWarnError()
+            return
+        }
         useCase.updateUser(User(name, surname))
     }
 

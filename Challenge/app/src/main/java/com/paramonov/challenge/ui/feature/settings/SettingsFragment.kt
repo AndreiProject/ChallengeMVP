@@ -2,21 +2,23 @@ package com.paramonov.challenge.ui.feature.settings
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.navigation.NavController
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentSettingsBinding
 import com.paramonov.challenge.ui.feature.main.NavigationView
 import com.paramonov.challenge.domain.profile.*
+import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
     NavigationView.Item {
     private var binding: FragmentSettingsBinding? = null
     private val mBinding get() = binding!!
 
-    private val useCase: ProfileUseCaseContract by KoinJavaComponent.inject(ProfileUseCase::class.java)
+    private val useCase: ProfileUseCaseContract by inject(ProfileUseCase::class.java)
     private val presenter: SettingsPresenterContract.Presenter by moxyPresenter {
         SettingsPresenter(useCase)
     }
@@ -31,11 +33,29 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsPresenterContract.View,
         }.root
 
     override fun init() {
-        mBinding.update.setOnClickListener {
-            val name = mBinding.name.text.toString()
-            val surname = mBinding.surname.text.toString()
-            presenter.updateUser(name, surname)
+        with(mBinding) {
+            update.setOnClickListener {
+                presenter.updateUser(name.text.toString(), surname.text.toString())
+            }
+            name.setOnEditorActionListener { _, _, _ ->
+                return@setOnEditorActionListener false
+            }
+            surname.setOnEditorActionListener { _, _, _ ->
+                return@setOnEditorActionListener false
+            }
         }
+    }
+
+    override fun nameWarnError() {
+        mBinding.name.warnError(requireContext(), R.string.name_input_warning)
+    }
+
+    override fun surnameWarnError() {
+        mBinding.surname.warnError(requireContext(), R.string.surname_input_warning)
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun setName(name: String) {

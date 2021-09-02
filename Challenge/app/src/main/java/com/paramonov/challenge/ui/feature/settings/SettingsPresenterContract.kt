@@ -12,6 +12,9 @@ interface SettingsPresenterContract {
     @AddToEndSingle
     interface View : MvpView {
         fun init()
+        fun nameWarnError()
+        fun surnameWarnError()
+        fun showToast(message: String)
         fun setName(name: String)
         fun setSurname(surname: String)
     }
