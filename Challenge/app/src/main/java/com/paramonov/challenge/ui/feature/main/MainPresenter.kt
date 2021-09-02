@@ -17,7 +17,7 @@ class MainPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPres
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
-        router.newRootScreen(screens.navigateToStatisticsFragment())
+        router.newRootScreen(screens.navigateToCategoryListFragment())
     }
 
     override fun logOut() {

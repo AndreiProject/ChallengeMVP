@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.navigation.*
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
@@ -19,7 +18,6 @@ import org.koin.java.KoinJavaComponent.inject
 
 class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener {
 
-    private var navController: NavController? = null
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
 
@@ -51,7 +49,6 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
     }
 
     override fun init() {
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         mBinding.navView.setNavigationItemSelectedListener(this)
         initBarDrawerToggle()
     }
