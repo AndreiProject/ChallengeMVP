@@ -84,10 +84,6 @@ class CategoryFragment : MvpAppCompatFragment(), NavigationView.Item,
         getChallengeAdapter()?.notifyItemChanged(pos)
     }
 
-    override fun onBackToCategoryList() {
-        getNavController()?.popBackStack()
-    }
-
     override fun onClick(v: View?, item: Challenge, pos: Int) {
         presenter.onClickViewChallengeItem(v, item, pos)
     }
