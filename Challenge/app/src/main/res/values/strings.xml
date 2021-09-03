@@ -4,6 +4,7 @@
     <string name="password">password</string>
     <string name="sign_in">sign in</string>
 
+    <string name="nav_category">Category</string>
     <string name="nav_category_list">Categories</string>
     <string name="nav_collection">Collection</string>
     <string name="nav_statistics">Statistics</string>

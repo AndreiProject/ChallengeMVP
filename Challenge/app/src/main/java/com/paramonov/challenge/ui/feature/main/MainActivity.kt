@@ -16,12 +16,14 @@ import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener {
+class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener,
+    ToolbarContract {
 
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
 
-    @Inject lateinit var navigatorHolder: NavigatorHolder
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
     private val navigator = AppNavigator(this, R.id.container)
 
     private val presenter: Presenter by moxyPresenter {
@@ -30,11 +32,14 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         }
     }
 
+    override fun setTitleToolbar(resId: Int) {
+        mBinding.toolbar.setTitle(resId)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        mBinding.toolbar.setTitle(R.string.nav_category_list)
         setContentView(mBinding.root)
         setSupportActionBar(mBinding.toolbar)
 
@@ -72,19 +77,15 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_statistics -> {
-                mBinding.toolbar.setTitle(R.string.nav_statistics)
                 presenter.navigateToStatistics()
             }
             R.id.nav_collection -> {
-                mBinding.toolbar.setTitle(R.string.nav_collection)
                 presenter.navigateToCollection()
             }
             R.id.nav_category_list -> {
-                mBinding.toolbar.setTitle(R.string.nav_category_list)
                 presenter.navigateToCategoryList()
             }
             R.id.nav_planner -> {
-                mBinding.toolbar.setTitle(R.string.nav_planner)
                 presenter.navigateToPlanner()
             }
             R.id.nav_arithmetic -> {

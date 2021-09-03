@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.paramonov.challenge.App
+import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentCollectionBinding
 import com.paramonov.challenge.data.repository.model.Category
 import moxy.MvpAppCompatFragment
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.View
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.Presenter
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 import moxy.ktx.moxyPresenter
 
 class CollectionFragment : MvpAppCompatFragment(), View {
@@ -40,6 +42,9 @@ class CollectionFragment : MvpAppCompatFragment(), View {
         rvCollection = mBinding.collectionRv
         rvCollection.setHasFixedSize(true)
         rvCollection.adapter = CollectionAdapter()
+
+        val root = requireActivity() as? ToolbarContract
+        root?.setTitleToolbar(R.string.nav_collection)
     }
 
     override fun updateList(list: List<Category>) {

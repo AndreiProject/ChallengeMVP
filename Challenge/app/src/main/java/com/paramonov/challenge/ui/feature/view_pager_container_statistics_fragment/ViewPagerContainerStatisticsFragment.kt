@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentViewPagerContainerBinding
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 
 class ViewPagerContainerStatisticsFragment : Fragment() {
     private var binding: FragmentViewPagerContainerBinding? = null
@@ -35,6 +36,9 @@ class ViewPagerContainerStatisticsFragment : Fragment() {
                 tab.text = tabName[position]
                 tab.setIcon(tabImage[position])
             }.attach()
+
+            val root = requireActivity() as? ToolbarContract
+            root?.setTitleToolbar(R.string.nav_statistics)
         }.root
 
     override fun onDestroyView() {

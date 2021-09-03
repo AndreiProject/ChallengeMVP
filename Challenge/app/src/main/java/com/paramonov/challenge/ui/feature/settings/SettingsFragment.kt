@@ -7,6 +7,7 @@ import com.paramonov.challenge.App
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.FragmentSettingsBinding
 import com.paramonov.challenge.domain.profile.*
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -37,6 +38,9 @@ class SettingsFragment : MvpAppCompatFragment(), View {
     ) = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
+            val root = requireActivity() as? ToolbarContract
+            root?.setTitleToolbar(R.string.nav_settings)
+
             App.appComponent.inject(this)
         }.root
 

@@ -16,6 +16,7 @@ import com.paramonov.challenge.ui.utils.loadByUrl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapterItemPresenterContract.ItemListener
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 
 class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View, ItemListener {
 
@@ -70,6 +71,9 @@ class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View,
         mBinding.tvTitle.text = getStringArg(CATEGORY_NAME)
 
         mBinding.downloadImg.setOnClickListener { presenter.saveCategoryImg() }
+
+        val root = requireActivity() as? ToolbarContract
+        root?.setTitleToolbar(R.string.nav_category)
     }
 
     override fun updateAdapterViewChallenges() {
