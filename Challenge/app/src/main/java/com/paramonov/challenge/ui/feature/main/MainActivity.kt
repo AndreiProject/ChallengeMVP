@@ -109,7 +109,6 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
                 true
             }
             R.id.action_settings -> {
-                mBinding.toolbar.setTitle(R.string.nav_settings)
                 presenter.navigateToSettings()
                 true
             }
