@@ -2,22 +2,19 @@ package com.paramonov.challenge
 
 import android.app.Application
 import com.paramonov.challenge.di.*
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import com.paramonov.challenge.di.module.LocalRepositoryModule
 
 class App : Application() {
+
+    companion object {
+        lateinit var appComponent: AppComponent
+    }
 
     override fun onCreate() {
         super.onCreate()
 
-        startKoin {
-            androidContext(this@App)
-            modules(
-                ciceroneModule,
-                remoteRepositoryModule,
-                localRepositoryModule,
-                useCaseModule
-            )
-        }
+        appComponent = DaggerAppComponent.builder()
+            .localRepositoryModule(LocalRepositoryModule(this))
+            .build()
     }
 }
