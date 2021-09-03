@@ -8,25 +8,26 @@ import androidx.core.view.GravityCompat
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
+import com.paramonov.challenge.App
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityMainBinding
-import com.paramonov.challenge.domain.authorization.*
 import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListener {
 
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
 
-    private val navigatorHolder: NavigatorHolder by inject(NavigatorHolder::class.java)
+    @Inject lateinit var navigatorHolder: NavigatorHolder
     private val navigator = AppNavigator(this, R.id.container)
 
-    private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
     private val presenter: Presenter by moxyPresenter {
-        MainPresenter(useCase)
+        MainPresenter().apply {
+            App.appComponent.inject(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,8 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
         mBinding.toolbar.setTitle(R.string.nav_category_list)
         setContentView(mBinding.root)
         setSupportActionBar(mBinding.toolbar)
+
+        App.appComponent.inject(this)
     }
 
     override fun onResumeFragments() {
