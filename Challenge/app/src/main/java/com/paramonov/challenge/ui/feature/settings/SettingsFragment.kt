@@ -38,9 +38,6 @@ class SettingsFragment : MvpAppCompatFragment(), View {
     ) = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
-            val root = requireActivity() as? ToolbarContract
-            root?.setTitleToolbar(R.string.nav_settings)
-
             App.appComponent.inject(this)
         }.root
 
@@ -56,6 +53,8 @@ class SettingsFragment : MvpAppCompatFragment(), View {
                 return@setOnEditorActionListener false
             }
         }
+        val root = requireActivity() as? ToolbarContract
+        root?.setTitleToolbar(R.string.nav_settings)
     }
 
     override fun nameWarnError() {
