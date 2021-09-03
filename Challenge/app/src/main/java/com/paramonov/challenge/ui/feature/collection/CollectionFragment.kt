@@ -3,14 +3,13 @@ package com.paramonov.challenge.ui.feature.collection
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
+import com.paramonov.challenge.App
 import com.paramonov.challenge.databinding.FragmentCollectionBinding
 import com.paramonov.challenge.data.repository.model.Category
-import com.paramonov.challenge.domain.content.*
 import moxy.MvpAppCompatFragment
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.View
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.Presenter
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent.inject
 
 class CollectionFragment : MvpAppCompatFragment(), View {
     companion object {
@@ -22,9 +21,10 @@ class CollectionFragment : MvpAppCompatFragment(), View {
 
     private lateinit var rvCollection: RecyclerView
 
-    private val useCase: ContentUseCaseContract by inject(ContentUseCase::class.java)
     private val presenter: Presenter by moxyPresenter {
-        CollectionListPresenter(useCase)
+        CollectionListPresenter().apply {
+            App.appComponent.inject(this)
+        }
     }
 
     override fun onCreateView(

@@ -5,14 +5,16 @@ import com.paramonov.challenge.domain.content.ContentUseCaseContract
 import moxy.MvpPresenter
 import com.paramonov.challenge.ui.feature.collection.CollectionListPresenterContract.*
 import io.reactivex.rxjava3.disposables.Disposable
+import javax.inject.Inject
 
-class CollectionListPresenter(private val useCase: ContentUseCaseContract) : MvpPresenter<View>(),
+class CollectionListPresenter() : MvpPresenter<View>(),
     Presenter {
 
     companion object {
         private val TAG = CollectionListPresenter::class.java.simpleName
     }
 
+    @Inject lateinit var useCase: ContentUseCaseContract
     private var disposable: Disposable? = null
 
     override fun onFirstViewAttach() {
