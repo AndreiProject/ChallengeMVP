@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.paramonov.challenge.App
+import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.databinding.FragmentCategoryListBinding
-import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.category_list.CategoryListPresenterContract.*
 import com.paramonov.challenge.ui.feature.category_list.CategoryListAdapter.ItemListener
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent.inject
 
 class CategoryListFragment : MvpAppCompatFragment(), View, ItemListener {
     companion object {
@@ -22,9 +23,10 @@ class CategoryListFragment : MvpAppCompatFragment(), View, ItemListener {
     private val mBinding get() = binding!!
     private lateinit var rvCategories: RecyclerView
 
-    private val useCase: ContentUseCaseContract by inject(ContentUseCase::class.java)
     private val presenter: Presenter by moxyPresenter {
-        CategoryListPresenter(useCase)
+        CategoryListPresenter().apply {
+            App.appComponent.inject(this)
+        }
     }
 
     override fun onCreateView(
@@ -39,6 +41,9 @@ class CategoryListFragment : MvpAppCompatFragment(), View, ItemListener {
     override fun init() {
         rvCategories = mBinding.categoryRv
         rvCategories.adapter = CategoryListAdapter(this)
+
+        val root = requireActivity() as? ToolbarContract
+        root?.setTitleToolbar(R.string.nav_category_list)
     }
 
     override fun updateList(list: List<Category>) {

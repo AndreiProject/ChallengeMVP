@@ -7,16 +7,16 @@ import androidx.appcompat.view.ActionMode
 import androidx.appcompat.view.ActionMode.Callback
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.paramonov.challenge.App
 import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.databinding.FragmentCategoriesBinding
-import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapter
 import com.paramonov.challenge.ui.utils.loadByUrl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent.inject
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapterItemPresenterContract.ItemListener
+import com.paramonov.challenge.ui.feature.main.ToolbarContract
 
 class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View, ItemListener {
 
@@ -40,9 +40,10 @@ class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View,
 
     private lateinit var rvChallenges: RecyclerView
 
-    private val useCase: ContentUseCaseContract by inject(ContentUseCase::class.java)
     private val presenter: CategoryPresenter by moxyPresenter {
-        CategoryPresenter(getCategoryBundle(), useCase)
+        CategoryPresenter(getCategoryBundle()).apply {
+            App.appComponent.inject(this)
+        }
     }
 
     private fun getCategoryBundle(): Category {
@@ -70,6 +71,9 @@ class CategoryFragment : MvpAppCompatFragment(), CategoryPresenterContract.View,
         mBinding.tvTitle.text = getStringArg(CATEGORY_NAME)
 
         mBinding.downloadImg.setOnClickListener { presenter.saveCategoryImg() }
+
+        val root = requireActivity() as? ToolbarContract
+        root?.setTitleToolbar(R.string.nav_category)
     }
 
     override fun updateAdapterViewChallenges() {

@@ -8,11 +8,11 @@ class AppRoomRepository(private val roomDatabase: AppRoomDatabase) :
 
     override fun getCategoriesWithChallenges(userId: String): List<Category> {
         val categoryDao = roomDatabase.getCategoryDao()
-        return categoryDao.getCategoriesWithChallenges(userId)
+        return categoryDao.getCategoriesWithChallenges(roomDatabase, userId)
     }
 
     override fun insertCategoryWithChallenges(category: Category, userId: String) {
         val categoryDao = roomDatabase.getCategoryDao()
-        categoryDao.insertCategoryWithChallenges(category, userId)
+        categoryDao.insertCategoryWithChallenges(roomDatabase, category, userId)
     }
 }

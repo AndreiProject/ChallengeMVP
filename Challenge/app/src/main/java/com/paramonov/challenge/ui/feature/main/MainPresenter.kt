@@ -4,15 +4,14 @@ import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 import com.paramonov.challenge.domain.authorization.AuthorizationUseCaseContract
 import com.paramonov.challenge.ui.feature.main.MainPresenterContract.*
-import com.paramonov.challenge.ui.navigation.AndroidScreens
 import com.paramonov.challenge.ui.navigation.IScreens
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
-class MainPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPresenter<View>(),
-    Presenter {
+class MainPresenter : MvpPresenter<View>(), Presenter {
 
-    private val router: Router by inject(Router::class.java)
-    private val screens: IScreens by inject(AndroidScreens::class.java)
+    @Inject lateinit var useCase: AuthorizationUseCaseContract
+    @Inject lateinit var router: Router
+    @Inject lateinit var screens: IScreens
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

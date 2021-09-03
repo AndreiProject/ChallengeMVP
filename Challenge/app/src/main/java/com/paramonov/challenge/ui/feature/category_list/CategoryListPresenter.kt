@@ -8,15 +8,16 @@ import moxy.MvpPresenter
 import com.paramonov.challenge.ui.feature.category_list.CategoryListPresenterContract.*
 import com.paramonov.challenge.ui.navigation.*
 import io.reactivex.rxjava3.disposables.Disposable
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
-class CategoryListPresenter(private val useCase: ContentUseCaseContract) : MvpPresenter<View>(), Presenter {
+class CategoryListPresenter() : MvpPresenter<View>(), Presenter {
     companion object {
         private val TAG = CategoryListPresenter::class.java.simpleName
     }
 
-    private val router: Router by inject(Router::class.java)
-    private val screens: IScreens by inject(AndroidScreens::class.java)
+    @Inject lateinit var useCase: ContentUseCaseContract
+    @Inject lateinit var router: Router
+    @Inject lateinit var screens: IScreens
 
     private var disposable: Disposable? = null
 

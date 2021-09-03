@@ -6,13 +6,15 @@ import com.paramonov.challenge.domain.profile.ProfileUseCaseContract
 import com.paramonov.challenge.ui.feature.settings.SettingsPresenterContract.*
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
+import javax.inject.Inject
 
-class SettingsPresenter(private val useCase: ProfileUseCaseContract) : MvpPresenter<View>(),
+class SettingsPresenter() : MvpPresenter<View>(),
     Presenter {
     companion object {
         val TAG: String = SettingsPresenter::class.java.simpleName
     }
 
+    @Inject lateinit var useCase: ProfileUseCaseContract
     private var disposable: Disposable? = null
 
     override fun onFirstViewAttach() {
