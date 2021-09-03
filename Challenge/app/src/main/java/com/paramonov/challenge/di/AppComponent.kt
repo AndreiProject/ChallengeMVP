@@ -26,7 +26,6 @@ interface AppComponent {
     fun inject(loginActivity: LoginActivity)
 
     // Fragment
-    fun inject(settingsFragment: SettingsFragment)
     fun inject(dialogFragment : PermissionDialogFragment)
 
     // Presenter

@@ -11,7 +11,6 @@ import com.paramonov.challenge.ui.feature.main.ToolbarContract
 import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import javax.inject.Inject
 import com.paramonov.challenge.ui.feature.settings.SettingsPresenterContract.View
 import com.paramonov.challenge.ui.feature.settings.SettingsPresenterContract.Presenter
 
@@ -23,8 +22,6 @@ class SettingsFragment : MvpAppCompatFragment(), View {
     private var binding: FragmentSettingsBinding? = null
     private val mBinding get() = binding!!
 
-    @Inject
-    lateinit var useCase: ProfileUseCaseContract
     private val presenter: Presenter by moxyPresenter {
         SettingsPresenter().apply {
             App.appComponent.inject(this)
@@ -38,7 +35,6 @@ class SettingsFragment : MvpAppCompatFragment(), View {
     ) = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
-            App.appComponent.inject(this)
         }.root
 
     override fun init() {

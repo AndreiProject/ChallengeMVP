@@ -22,8 +22,7 @@ class MainActivity : MvpAppCompatActivity(), View, OnNavigationItemSelectedListe
     private var binding: ActivityMainBinding? = null
     private val mBinding get() = binding!!
 
-    @Inject
-    lateinit var navigatorHolder: NavigatorHolder
+    @Inject lateinit var navigatorHolder: NavigatorHolder
     private val navigator = AppNavigator(this, R.id.container)
 
     private val presenter: Presenter by moxyPresenter {
