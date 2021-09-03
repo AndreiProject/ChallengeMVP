@@ -7,11 +7,11 @@ import androidx.fragment.app.DialogFragment
 import com.github.terrakok.cicerone.Router
 import com.paramonov.challenge.R
 import com.paramonov.challenge.ui.navigation.*
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
 class PermissionDialogFragment : DialogFragment() {
-    private val router: Router by inject(Router::class.java)
-    private val screens: IScreens by inject(AndroidScreens::class.java)
+    @Inject lateinit var router: Router
+    @Inject lateinit var screens: IScreens
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())

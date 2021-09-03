@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.paramonov.challenge.App
 import com.paramonov.challenge.R
 import com.paramonov.challenge.databinding.ActivityLoginBinding
 import com.paramonov.challenge.domain.authorization.*
@@ -18,7 +19,7 @@ import com.paramonov.challenge.ui.feature.login.PermissionDialogFragment.DialogL
 import com.paramonov.challenge.ui.utils.warnError
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
 private const val REQUEST_PERMISSIONS = 112
 
@@ -27,22 +28,25 @@ class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterCont
         val TAG: String = LoginActivity::class.java.simpleName
     }
 
-    private val navigatorHolder: NavigatorHolder by inject(NavigatorHolder::class.java)
+    @Inject lateinit var navigatorHolder: NavigatorHolder
     private val navigator = AppNavigator(this, R.id.container)
 
     private var binding: ActivityLoginBinding? = null
     private val mBinding get() = binding!!
     private lateinit var dialog: PermissionDialogFragment
 
-    private val useCase: AuthorizationUseCaseContract by inject(AuthorizationUseCase::class.java)
     private val presenter: LoginPresenterContract.Presenter by moxyPresenter {
-        LoginPresenter(useCase)
+        LoginPresenter().apply {
+            App.appComponent.inject(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
+        App.appComponent.inject(this)
     }
 
     override fun onResumeFragments() {
@@ -69,6 +73,9 @@ class LoginActivity : MvpAppCompatActivity(), DialogListener, LoginPresenterCont
             }
         }
         dialog = PermissionDialogFragment()
+        dialog.apply {
+            App.appComponent.inject(this)
+        }
         checkPermission()
     }
 

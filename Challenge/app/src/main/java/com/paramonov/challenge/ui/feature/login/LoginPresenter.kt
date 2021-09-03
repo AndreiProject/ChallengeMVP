@@ -6,15 +6,15 @@ import com.paramonov.challenge.ui.feature.login.LoginPresenterContract.*
 import com.paramonov.challenge.ui.navigation.*
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
 
-class LoginPresenter(private val useCase: AuthorizationUseCaseContract) : MvpPresenter<View>(),
-    Presenter {
+class LoginPresenter() : MvpPresenter<View>(), Presenter {
     private var dataAuth: Result? = null
     private var disposable: Disposable? = null
 
-    private val router: Router by inject(Router::class.java)
-    private val screens: IScreens by inject(AndroidScreens::class.java)
+    @Inject lateinit var useCase: AuthorizationUseCaseContract
+    @Inject lateinit var router: Router
+    @Inject lateinit var screens: IScreens
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
