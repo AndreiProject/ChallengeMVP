@@ -11,7 +11,6 @@ import com.paramonov.challenge.App
 import com.paramonov.challenge.R
 import com.paramonov.challenge.data.repository.model.*
 import com.paramonov.challenge.databinding.FragmentCategoriesBinding
-import com.paramonov.challenge.domain.content.*
 import com.paramonov.challenge.ui.feature.category.list_adapter.ChallengeAdapter
 import com.paramonov.challenge.ui.utils.loadByUrl
 import moxy.MvpAppCompatFragment

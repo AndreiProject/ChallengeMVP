@@ -5,11 +5,9 @@ import androidx.room.OnConflictStrategy.REPLACE
 import com.paramonov.challenge.data.repository.model.Category
 import com.paramonov.challenge.data.repository.local.room.model.CategoryChallenges
 import com.paramonov.challenge.data.source.room.AppRoomDatabase
-import org.koin.java.KoinJavaComponent.inject
 
 @Dao
 abstract class CategoryDao {
-    private val roomDatabase: AppRoomDatabase by inject(AppRoomDatabase::class.java)
 
     @Query(
         "select distinct category.id, category.img_url, category.name from category " +
@@ -25,9 +23,9 @@ abstract class CategoryDao {
     abstract fun delete(category: Category)
 
     @Transaction
-    open fun getCategoriesWithChallenges(userId: String): List<Category> {
+    open fun getCategoriesWithChallenges(db: AppRoomDatabase, userId: String): List<Category> {
         val categories = getCategories(userId)
-        val challengeDao = roomDatabase.getChallengeDao()
+        val challengeDao = db.getChallengeDao()
         for (item in categories) {
             item.items = challengeDao.getCategoryChallenges(item.id, userId)
         }
@@ -35,12 +33,12 @@ abstract class CategoryDao {
     }
 
     @Transaction
-    open fun insertCategoryWithChallenges(category: Category, userId: String) {
+    open fun insertCategoryWithChallenges(db: AppRoomDatabase, category: Category, userId: String) {
         insert(category)
         category.items?.let { categories ->
             for (item in categories) {
-                roomDatabase.getChallengeDao().insert(item)
-                roomDatabase.getCategoryChallengesDao()
+                db.getChallengeDao().insert(item)
+                db.getCategoryChallengesDao()
                     .insert(
                         CategoryChallenges(
                             userId,
