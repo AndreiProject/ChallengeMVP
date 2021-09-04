@@ -28,4 +28,4 @@ ___Навигация___: реализована с использованием
 ___Основные библиотеки___: Room, Rxjava3, Retrofit2, Firebase, Dagger2, Moxy 
  
  
-[Ссылка на релизную сборку apk](https://github.com/AndreiProject/ChallengeMVVM/tree/stable/Challenge/app/build/outputs/apk/release)
+[Ссылка на релизную сборку apk](https://github.com/AndreiProject/ChallengeMVP/tree/stable/Challenge/app/build/outputs/apk/release)
