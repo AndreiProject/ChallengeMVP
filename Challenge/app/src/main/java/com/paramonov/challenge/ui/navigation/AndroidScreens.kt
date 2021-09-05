@@ -15,7 +15,7 @@ import com.paramonov.challenge.ui.feature.login.LoginActivity
 import com.paramonov.challenge.ui.feature.main.MainActivity
 import com.paramonov.challenge.ui.feature.planner.PlannerFragment
 import com.paramonov.challenge.ui.feature.settings.SettingsFragment
-import com.paramonov.challenge.ui.feature.view_pager_container_statistics_fragment.ViewPagerContainerStatisticsFragment
+import com.paramonov.challenge.ui.feature.statistics.StatisticsContainerFragment
 
 class AndroidScreens : IScreens {
 
@@ -30,7 +30,7 @@ class AndroidScreens : IScreens {
     override fun navigateToStatisticsFragment(): Screen {
         return FragmentScreen(null, object : Creator<FragmentFactory, Fragment> {
             override fun create(argument: FragmentFactory): Fragment {
-              return ViewPagerContainerStatisticsFragment.newInstance()
+              return StatisticsContainerFragment.newInstance()
             }
         })
     }

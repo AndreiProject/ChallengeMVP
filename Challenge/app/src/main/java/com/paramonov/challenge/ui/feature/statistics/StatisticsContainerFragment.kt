@@ -1,26 +1,26 @@
-package com.paramonov.challenge.ui.feature.view_pager_container_statistics_fragment
+package com.paramonov.challenge.ui.feature.statistics
 
 import android.view.*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paramonov.challenge.R
-import com.paramonov.challenge.databinding.FragmentViewPagerContainerBinding
+import com.paramonov.challenge.databinding.FragmentStatisticsContainerBinding
 import com.paramonov.challenge.ui.feature.main.ToolbarContract
 
-class ViewPagerContainerStatisticsFragment : Fragment() {
-    private var binding: FragmentViewPagerContainerBinding? = null
+class StatisticsContainerFragment : Fragment() {
+    private var binding: FragmentStatisticsContainerBinding? = null
     private val mBinding get() = binding!!
 
     companion object {
-        fun newInstance() = ViewPagerContainerStatisticsFragment()
+        fun newInstance() = StatisticsContainerFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentViewPagerContainerBinding.inflate(layoutInflater, container, false)
+    ) = FragmentStatisticsContainerBinding.inflate(layoutInflater, container, false)
         .also {
             binding = it
             val viewPager = mBinding.viewPager

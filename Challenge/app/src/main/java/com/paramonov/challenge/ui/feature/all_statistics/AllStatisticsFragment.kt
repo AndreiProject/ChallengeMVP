@@ -1,4 +1,4 @@
-package com.paramonov.challenge.ui.feature.all_statistics_fragment
+package com.paramonov.challenge.ui.feature.all_statistics
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
